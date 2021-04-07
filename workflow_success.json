@@ -1,0 +1,17 @@
+{
+    "step-a": {
+        "name": "Human-readable Step Name",
+        "description": "This step does a thing",
+        "depends_on": []
+    },
+    "step-b": {
+        "name": "Another Step Name",
+        "description": "This step does _another_ thing",
+        "depends_on": []
+    },
+    "step-c": {
+        "name": "Another Step Name",
+        "description": "This step does _another_ thing",
+        "depends_on": ["step-a", "step-b"]
+    }
+}
