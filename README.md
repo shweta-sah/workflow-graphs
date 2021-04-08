@@ -14,7 +14,7 @@ Workflow-graphs is a Python3 program to validate a workflow in json format.
 * To install on MAC:
 * ```brew tap mongodb/brew```
 * ```brew install mongodb-community@4.4```
-* ```brew services start mongodb/brew/mongodb-community
+* ```brew services start mongodb/brew/mongodb-community```
 * To connect to DB:
 * ```mongo --host localhost:27017```
 
