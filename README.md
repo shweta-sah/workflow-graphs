@@ -1,15 +1,11 @@
 # workflow-graphs
 
-Workflow-graphs is a Python3 program to validate a workflow in json format.
+Workflow-graphs is a Python3 program to add valid json workflows to the db.
 
 ### Pre-requisites:
 Python3: https://www.python.org/downloads/
 * ```python3 -m pip install --upgrade pip setuptools wheel```
-* ```pip3 install json```
-* ```pip3 install pprint```
-* ```pip3 install sys```
-* ```pip3 install argparse```
-* ```pip3 install pymongo```
+* ```pip3 install argparse pymongo```
 
 Generic installation steps for MongoDB: https://docs.mongodb.com/manual/tutorial/install-mongodb-enterprise-on-os-x/
 To install on MAC:
@@ -24,10 +20,10 @@ To connect to DB:
 
 If you want a GUI, downlaod MongoDB Compass: https://docs.mongodb.com/compass/current/install/
 
-Usage:
+### Usage:
 1. To add a workflow to the database \
 ```python3 workflow.py add -f input.json -n my-workflow```
 2. To get a workflow from the database \
-```python3 workflow.py get my-workflow```
+```python3 workflow.py get -n my-workflow```
 3. To remove a workflow from the database \
-```python3 workflow.py remove my-workflow```
+```python3 workflow.py remove -n my-workflow```
