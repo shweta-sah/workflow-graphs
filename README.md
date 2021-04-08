@@ -3,26 +3,31 @@
 Workflow-graphs is a Python3 program to validate a workflow in json format.
 
 ### Pre-requisites:
-* Python3: https://www.python.org/downloads/
+Python3: https://www.python.org/downloads/
 * ```python3 -m pip install --upgrade pip setuptools wheel```
 * ```pip3 install json```
 * ```pip3 install pprint```
 * ```pip3 install sys```
 * ```pip3 install argparse```
 * ```pip3 install pymongo```
-* MongoDB: https://docs.mongodb.com/manual/tutorial/install-mongodb-enterprise-on-os-x/
-* To install on MAC:
+
+Generic installation steps for MongoDB: https://docs.mongodb.com/manual/tutorial/install-mongodb-enterprise-on-os-x/
+To install on MAC:
 * ```brew tap mongodb/brew```
 * ```brew install mongodb-community@4.4```
+
+To start the mongo service:
 * ```brew services start mongodb/brew/mongodb-community```
-* To connect to DB:
+
+To connect to DB:
 * ```mongo --host localhost:27017```
 
+If you want a GUI, downlaod MongoDB Compass: https://docs.mongodb.com/compass/current/install/
 
-Usage:\
-```python3 workflow.py add -f input.json -n my-workflow```\
-```python3 workflow.py get my-workflow```\
+Usage:
+1. To add a workflow to the database \
+```python3 workflow.py add -f input.json -n my-workflow```
+2. To get a workflow from the database \
+```python3 workflow.py get my-workflow```
+3. To remove a workflow from the database \
 ```python3 workflow.py remove my-workflow```
-
-Example:\
-```python3 workflow.py -f ./test_files/workflow_success.json```\
