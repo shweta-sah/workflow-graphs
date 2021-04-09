@@ -1,4 +1,5 @@
 import constants
+from pprint import pprint
 class ErrorMessage():
     def __init__(self):
         self.message = {"result": {"errors": []}}
@@ -11,3 +12,9 @@ class ErrorMessage():
         if reason == constants.MISSING_DEPENDENCY and missing_nodes:
             self.block[constants.MISSING_DEPENDENCY] = missing_nodes
         self.message["result"]["errors"].append(self.block)
+
+
+class InvalidWorkflowError(Exception):
+    def __init__(self, error_log, message="Invalid Workflow! Won't add to the db!!"):
+        super().__init__(message)
+        pprint(error_log)
