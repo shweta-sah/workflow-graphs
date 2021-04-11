@@ -1,0 +1,10 @@
+# Ignore following files
+__pycache__/
+*.html
+
+# OS generated files
+.DS_Store
+
+# Ignore coverage files
+.coverage
+htmlcov
