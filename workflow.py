@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 import json
-import constants
-import ErrorMessage
-from pprint import pprint
 import sys
 import argparse
 import pymongo
-import db_utils
-from utils import Utilities
+from utilities.db_utils import MongoDB
+import constants.resp_constants as constants
+import constants.db_constants as db_constants
+import utilities.error_message as ErrorMessage
+from utilities.utils import Utilities
+from pprint import pprint
+
 
 def main():
     # Initialize argparse
@@ -19,14 +21,11 @@ def main():
 
     parsed = parser.parse_args()
 
-    client = pymongo.MongoClient(host="localhost", port=27017)
-    
-    # We will have a db called "cape" and a collection inside it "cape_workflows". A collection in Mongo is similar to a table in a RDBMS.
-    # If db "cape" doesn't exist it will create one.
-    db = client.cape
 
+    mongo_cape = MongoDB(db_constants.host, db_constants.port, db_constants.db, db_constants.collection)
+    
     # Make "name" as the unique index to avoid duplicate name workflows
-    resp = db.cape_workflows.create_index("name", name="name", unique=True)
+    mongo_cape.create_index("name", name="name", unique=True)
 
     # Pass collection instead of db to the functions
     if parsed.action == "validate":
@@ -78,14 +77,15 @@ def main():
                 raise ErrorMessage.InvalidWorkflowError(message)
             else:
                 # Add workflow to MongoDB
-                db_utils.add_workflow(db, workflow, parsed.name)
-                print(f"Workflow {parsed.name} added to the db")
+                success = mongo_cape.add_workflow(workflow, parsed.name)
+                if success:
+                    print(f"Workflow {parsed.name} added to the db")
         
     elif parsed.action == "get":
         if not parsed.name:
             parser.error("The following arguments are required: -n/--name")
         try:
-            document_cursor = db_utils.get_workflow(db,  parsed.name)
+            document_cursor = mongo_cape.get_workflow(parsed.name)
             if document_cursor:
                 pprint(document_cursor['workflow'])
             else:
@@ -96,7 +96,7 @@ def main():
     elif parsed.action == "remove":
         if not parsed.name:
             parser.error("The following arguments are required: -n/--name")
-        response = db_utils.remove_workflow(db, parsed.name)
+        response = mongo_cape.remove_workflow(parsed.name)
         if response["success"]:
             print(f"Workflow {parsed.name} deleted")
         else:

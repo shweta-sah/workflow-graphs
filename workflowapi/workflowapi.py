@@ -1,19 +1,12 @@
 #!/usr/bin/env python3
-from flask import Flask, request, Response
-import pymongo
-from pymongo import MongoClient
 import json
-import db_utils
-from utils import Utilities
-import constants
+from utilities.db_utils import MongoDB
+import constants.resp_constants as constants
+import constants.db_constants as db_constants
+from utilities.utils import Utilities
+from flask import Flask, request, Response
 
-client = pymongo.MongoClient(host="localhost", port=27017)
-    
-# We will have a db called "cape" and a collection inside it "cape_workflows". A collection in Mongo is similar to a table in a RDBMS.
-# If db "cape" doesn't exist it will create one.
-db = client.cape
-collection = db.cape_workflows
-
+mongo_cape = MongoDB(db_constants.host, db_constants.port, db_constants.db, db_constants.collection)
 app = Flask(__name__)
 
 @app.route("/")
@@ -33,18 +26,16 @@ def add_workflows():
                             mimetype="application/json")
         else:
             # Add workflow to MongoDB
-            db_utils.add_workflow(db, workflow, name)
+            mongo_cape.add_workflow(workflow, name)
             return Response(response=json.dumps(constants.SUCCESS_RESULT),
                             status=200,
                             mimetype="application/json")
     except Exception as e:
         print("Couldn't add workflow")
 
-
-
 @app.route("/workflows/<workflow_name>", methods =["GET"])
 def get_workflows(workflow_name):
-    workflow = db_utils.get_workflow(db, workflow_name)
+    workflow = mongo_cape.get_workflow(name=workflow_name)
     if workflow:
         return Response(response=json.dumps(workflow["workflow"]),
                         status=200,
@@ -56,7 +47,7 @@ def get_workflows(workflow_name):
 
 @app.route("/workflows/<workflow_name>", methods =["DELETE"])
 def delete_workflows(workflow_name):
-    result = db_utils.remove_workflow(db, workflow_name)
+    result = mongo_cape.remove_workflow(workflow_name)
     if result["success"]:
         return Response(response=json.dumps(f"Workflow {workflow_name} deleted"),
                         status=200,
@@ -65,6 +56,3 @@ def delete_workflows(workflow_name):
         return Response(response=json.dumps({"error" : f"Workflow {workflow_name} does not exist!!"}),
                         status=404,
                         mimetype="application/json")
-
-
-
