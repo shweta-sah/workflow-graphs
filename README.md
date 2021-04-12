@@ -1,5 +1,4 @@
 # workflow-graphs
------------------
 
 Workflow-graphs is a Python3 program to add valid json workflows to the db. Add, get and delete functionality is also exposed via APIs
 
@@ -9,9 +8,10 @@ Python3: https://www.python.org/downloads/
 ```python3 -m pip install --upgrade pip setuptools wheel```
 ```pip3 install -r requirements.txt```
 
-Generic installation steps for MongoDB: https://docs.mongodb.com/manual/tutorial/install-mongodb-enterprise-on-os-x/
+Generic installation steps for MongoDB: https://docs.mongodb.com/manual/tutorial/install-mongodb-enterprise-on-os-x/ \
 To install on MAC:  
-```brew tap mongodb/brew  
+```
+brew tap mongodb/brew  
 brew install mongodb-community@4.4  
 ```
 
@@ -36,10 +36,10 @@ If you want a GUI, downlaod MongoDB Compass: https://docs.mongodb.com/compass/cu
 4. To remove a workflow from the database \
 ```python3 workflow.py remove -n my-workflow```
 
-## APIs:  
+## API:  
 The APIs are defined in ```workflowapi/workflowapi.py```
 
-### Run the API:  
+### Run the Flask App:  
 #### Set the environment variable:
 For MAC:
 ```export FLASK_APP=workflowapi.workflowapi```
@@ -49,8 +49,7 @@ For Windows:
 #### Run the flask app
 ```flask run```
 
-1. Add a workflow
---------------
+1. Add a workflow  
 
 * `POST /workflows/create` will create a new workflow. `name` is required, `input` is a the workflow dictionary to be added.
 BODY:  
@@ -74,14 +73,12 @@ BODY:
 
 This will return `200 Success`, if successful, `400` and a dictionary of what's missing if missing fields.
 
-2. Get a workflow
---------------
+2. Get a workflow  
 
 * `GET /workflows/<workflow_name>` will get the workflow if exists. `workflow_name` is required.
 
 
-3. Delete a workflow
---------------
+3. Delete a workflow  
 
 * `DELETE /workflows/<workflow_name>` will delete the workflow if exists. `workflow_name` is required.
 
