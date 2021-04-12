@@ -15,7 +15,7 @@
     "step-d": {
         "name": "Another Step Name",
         "description": "This step does _another_ thing",
-        "depends_on": []
+        "depends_on": ["step-g"]
     },
     "step-e": {
         "name": "Another Step Name",

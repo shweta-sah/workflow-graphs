@@ -65,7 +65,7 @@ def delete_workflows(workflow_name):
     try:
         result = mongo_cape.remove_workflow(workflow_name)
         if result["success"]:
-            return Response(response=json.dumps(f"Workflow {workflow_name} deleted"),
+            return Response(response=json.dumps({"result" : f"Workflow {workflow_name} deleted"}),
                             status=200,
                             mimetype="application/json")
         else:
