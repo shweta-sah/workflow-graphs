@@ -15,5 +15,5 @@ class ErrorMessage():
 
 class InvalidWorkflowError(Exception):
     def __init__(self, error_log, message="Invalid Workflow! Won't add to the db!!"):
-        super().__init__(message)
-        pprint(error_log)
+        self.message = message
+        self.error_log = error_log

@@ -8,8 +8,8 @@ class MongoDB():
         
         # We will have a db called "cape" and a collection inside it "cape_workflows". A collection in Mongo is similar to a table in a RDBMS.
         # If db "cape" doesn't exist it will create one.
-        self.db = self.client['db']
-        self.collection = self.db['collection']
+        self.db = self.client[db]
+        self.collection = self.db[collection]
 
     def add_workflow(self, workflow, name):
         try:
@@ -24,7 +24,7 @@ class MongoDB():
     def get_workflow(self, name):
         document_cursor = self.collection.find_one({"name": name})
         self.client.close()
-        return document_cursor
+        return document_cursor 
 
     def remove_workflow(self, name):
         result= self.collection.delete_many({"name": name})

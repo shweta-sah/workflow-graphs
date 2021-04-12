@@ -26,33 +26,54 @@ def add_workflows():
                             mimetype="application/json")
         else:
             # Add workflow to MongoDB
-            mongo_cape.add_workflow(workflow, name)
-            return Response(response=json.dumps(constants.SUCCESS_RESULT),
-                            status=200,
-                            mimetype="application/json")
-    except Exception as e:
+            success = mongo_cape.add_workflow(workflow, name)
+            if success:
+                return Response(response=json.dumps(constants.SUCCESS_RESULT),
+                                status=200,
+                                mimetype="application/json")
+            else:
+                return Response(response=json.dumps({"error": constants.WORKFLOW_EXISTS.replace(constants.WORKFLOW_NAME_PLACEHOLDER, str(name))}),
+                                status=409,
+                                mimetype="application/json")
+    except:
         print("Couldn't add workflow")
+        return Response(response=json.dumps(constants.BAD_REQUEST),
+                            status=400,
+                            mimetype="application/json")
 
 @app.route("/workflows/<workflow_name>", methods =["GET"])
 def get_workflows(workflow_name):
-    workflow = mongo_cape.get_workflow(name=workflow_name)
-    if workflow:
-        return Response(response=json.dumps(workflow["workflow"]),
-                        status=200,
-                        mimetype="application/json")
-    else:
-        return Response(response=json.dumps({"error" : f"Workflow {workflow_name} does not exist!!"}),
-                        status=404,
-                        mimetype="application/json")
+    try:
+        workflow = mongo_cape.get_workflow(name=workflow_name)
+        print(workflow)
+        if workflow:
+            return Response(response=json.dumps(workflow["workflow"]),
+                            status=200,
+                            mimetype="application/json")
+        else:
+            return Response(response=json.dumps({"error" : constants.WORKFLOW_DOESNOT_EXIST.replace(constants.WORKFLOW_NAME_PLACEHOLDER, str(workflow_name))}),
+                            status=404,
+                            mimetype="application/json")
+    except:
+        print("Couldn't get workflow")
+        return Response(response=json.dumps(constants.BAD_REQUEST),
+                            status=400,
+                            mimetype="application/json")
 
 @app.route("/workflows/<workflow_name>", methods =["DELETE"])
 def delete_workflows(workflow_name):
-    result = mongo_cape.remove_workflow(workflow_name)
-    if result["success"]:
-        return Response(response=json.dumps(f"Workflow {workflow_name} deleted"),
-                        status=200,
-                        mimetype="application/json")
-    else:
-        return Response(response=json.dumps({"error" : f"Workflow {workflow_name} does not exist!!"}),
-                        status=404,
-                        mimetype="application/json")
+    try:
+        result = mongo_cape.remove_workflow(workflow_name)
+        if result["success"]:
+            return Response(response=json.dumps(f"Workflow {workflow_name} deleted"),
+                            status=200,
+                            mimetype="application/json")
+        else:
+            return Response(response=json.dumps({"error" : f"Workflow {workflow_name} does not exist!!"}),
+                            status=404,
+                            mimetype="application/json")
+    except:
+        print("Couldn't delete workflow")
+        return Response(response=json.dumps(constants.BAD_REQUEST),
+                            status=400,
+                            mimetype="application/json")

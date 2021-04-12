@@ -1,5 +1,6 @@
 # Ignore following files
 __pycache__/
+*/__init__.py
 *.html
 
 # OS generated files
